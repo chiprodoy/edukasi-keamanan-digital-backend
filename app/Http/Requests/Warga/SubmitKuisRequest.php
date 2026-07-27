@@ -6,23 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SubmitKuisRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return $this->user() && $this->user()->role === 'warga';
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'materi_id'           => 'required|exists:materi,id',
+            'jawaban'             => 'required|array|min:1',
+            'jawaban.*.kuis_id'   => 'required|exists:kuis,id',
+            'jawaban.*.opsi_id'   => 'required|exists:opsi_jawaban,id',
         ];
     }
 }

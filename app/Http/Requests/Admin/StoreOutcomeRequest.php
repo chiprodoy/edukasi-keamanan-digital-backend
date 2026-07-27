@@ -6,23 +6,21 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOutcomeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return $this->user() && $this->user()->role === 'admin';
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'kode_outcome'            => 'required|string|max:20|unique:outcomes,kode_outcome',
+            'judul_kompetensi'        => 'required|string|max:255',
+            'deskripsi'               => 'required|string',
+            'rubriks'                 => 'required|array|min:1',
+            'rubriks.*.batas_bawah'  => 'required|integer|min:0|max:100',
+            'rubriks.*.batas_atas'   => 'required|integer|min:0|max:100|gte:rubriks.*.batas_bawah',
+            'rubriks.*.deskripsi'    => 'required|string',
         ];
     }
 }
