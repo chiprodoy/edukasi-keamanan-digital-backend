@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\KategoriArtikel;
 return new class extends Migration
 {
     /**
@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('admin_id')->constrained('admin')->onDelete('cascade');
             $table->string('judul');
             $table->string('slug')->unique();
-            $table->string('kategori', 100);
+        // Menambahkan foreign key berelasi ke kategori_artikels
+            $table->foreignIdFor(KategoriArtikel::class, 'kategori_artikel_id')->onDelete('cascade');
             $table->longText('konten');
             $table->string('thumbnail')->nullable();
             $table->boolean('is_pinned')->default(false);

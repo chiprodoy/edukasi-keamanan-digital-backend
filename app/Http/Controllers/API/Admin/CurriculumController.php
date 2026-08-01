@@ -99,24 +99,5 @@ class CurriculumController extends Controller
         ], 201);
     }
 
-    public function storeArtikel(StoreArtikelRequest $request): JsonResponse
-    {
-        $admin = auth()->user()->admin;
 
-        $artikel = Artikel::create([
-            'admin_id'  => $admin->id,
-            'judul'     => $request->judul,
-            'slug'      => Str::slug($request->judul) . '-' . Str::random(5),
-            'kategori'  => $request->kategori,
-            'konten'    => $request->konten,
-            'thumbnail' => $request->thumbnail,
-            'is_pinned' => $request->is_pinned ?? false,
-            'status'    => $request->status,
-        ]);
-
-        return response()->json([
-            'message' => 'Artikel / Alert berhasil dibuat.',
-            'data'    => $artikel,
-        ], 201);
-    }
 }

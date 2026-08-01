@@ -13,7 +13,7 @@ class Artikel extends Model
         'admin_id',
         'judul',
         'slug',
-        'kategori',
+        'kategori_artikel_id',
         'konten',
         'thumbnail',
         'is_pinned',
@@ -28,5 +28,11 @@ class Artikel extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class);
+    }
+
+    // Relasi Many-to-One: Artikel milik 1 Kategori
+    public function kategori(): BelongsTo
+    {
+        return $this->belongsTo(KategoriArtikel::class, 'kategori_artikel_id');
     }
 }

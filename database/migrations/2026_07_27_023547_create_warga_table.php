@@ -17,7 +17,6 @@ return new class extends Migration
             $table->char('nik', 16)->unique();
             $table->string('no_hp', 15)->nullable();
             $table->string('kecamatan', 100);
-            $table->string('desa', 100);
             $table->enum('level_literasi', ['Pemula', 'Menengah', 'Mahir'])->default('Pemula');
             $table->timestamps();
         });

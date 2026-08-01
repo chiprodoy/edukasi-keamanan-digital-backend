@@ -21,6 +21,8 @@ class OutcomeSeeder extends Seeder
             'outcome_id'        => $outcome1->id,
             'batas_bawah_skor'  => 0,
             'batas_atas_skor'   => 50,
+            'label_level'       => 'Pemula',
+            'level'             => 1,
             'deskripsi_capaian' => 'Pemula: Memahami konsep dasar sandi namun belum menerapkan otentikasi dua langkah (2FA).',
         ]);
 
@@ -28,6 +30,8 @@ class OutcomeSeeder extends Seeder
             'outcome_id'        => $outcome1->id,
             'batas_bawah_skor'  => 51,
             'batas_atas_skor'   => 100,
+            'label_level'       => 'Mahir',
+            'level'             => 2,
             'deskripsi_capaian' => 'Mahir: Mampu mengamankan seluruh akun pribadi dengan kombinasi sandi kuat dan fitur 2FA.',
         ]);
 
@@ -42,6 +46,8 @@ class OutcomeSeeder extends Seeder
             'outcome_id'        => $outcome2->id,
             'batas_bawah_skor'  => 0,
             'batas_atas_skor'   => 50,
+            'label_level'       => 'Pemula',
+            'level'             => 1,
             'deskripsi_capaian' => 'Pemula: Rentan terkecoh oleh link atau file palsu (.APK) yang dikirim melalui aplikasi pesan.',
         ]);
 
@@ -49,6 +55,8 @@ class OutcomeSeeder extends Seeder
             'outcome_id'        => $outcome2->id,
             'batas_bawah_skor'  => 51,
             'batas_atas_skor'   => 100,
+            'label_level'       => 'Mahir',
+            'level'             => 2,
             'deskripsi_capaian' => 'Mahir: Mampu menganalisis indikator kecurangan tautan/file serta memverifikasi sumber pesan.',
         ]);
     }

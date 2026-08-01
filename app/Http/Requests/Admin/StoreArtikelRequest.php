@@ -15,7 +15,7 @@ class StoreArtikelRequest extends FormRequest
     {
         return [
             'judul'     => 'required|string|max:255',
-            'kategori'  => 'required|string|max:100',
+            'kategori_artikel_id'  => 'required|exists:kategori_artikels,id',
             'konten'    => 'required|string',
             'thumbnail' => 'nullable|string',
             'is_pinned' => 'boolean',

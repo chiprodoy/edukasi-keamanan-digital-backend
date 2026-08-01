@@ -6,8 +6,12 @@ use App\Http\Controllers\API\ArtikelController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\KuisController;
 use App\Http\Controllers\API\MateriController;
+use App\Http\Controllers\API\Admin\DashboardController;
+use App\Http\Controllers\API\KategoriArtikelController;
+use App\Http\Controllers\API\WargaController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\OutcomeController;
+use App\Http\Controllers\API\RubrikPenilaianController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Tanpa Auth)
@@ -35,16 +39,29 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me', [AuthController::class, 'me']);
 
+
     // Warga Quiz Endpoint
     Route::get('/kuis/materi/{materiId}', [KuisController::class, 'getKuisByMateri']);
     Route::post('/kuis/submit', [KuisController::class, 'submitKuis']);
 
     // Admin Endpoints
     Route::prefix('admin')->group(function () {
-        Route::post('/outcomes', [CurriculumController::class, 'storeOutcome']);
+            // Endpoint Dashboard Admin
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+        //Route::post('/outcomes', [CurriculumController::class, 'storeOutcome']);
+
+        Route::get('/materi', [MateriController::class, 'index']);
         Route::post('/materi', [CurriculumController::class, 'storeMateri']);
         Route::post('/kuis', [CurriculumController::class, 'storeKuis']);
-        Route::post('/artikel', [CurriculumController::class, 'storeArtikel']);
+
+        Route::apiResource('kategori-artikel', KategoriArtikelController::class);
+        Route::apiResource('/artikel', ArtikelController::class);
+        Route::apiResource('warga', WargaController::class);
+
+        // Menyediakan otomatis route: GET, POST, GET {id}, PUT/PATCH {id}, DELETE {id}
+        Route::apiResource('outcomes', OutcomeController::class);
+        Route::apiResource('rubrik-penilaian', RubrikPenilaianController::class);
+
         Route::get('/laporan/literasi', [LaporanController::class, 'getAnalitikLiterasi']);
     });
 });

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('outcome_id')->constrained('outcomes')->onDelete('cascade');
             $table->integer('batas_bawah_skor');
             $table->integer('batas_atas_skor');
+            $table->string('label_level');
+            $table->integer('level');
             $table->text('deskripsi_capaian');
             $table->timestamps();
         });

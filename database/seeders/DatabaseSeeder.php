@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             OutcomeSeeder::class,
             MateriSeeder::class,
+            KategoriArtikelSeeder::class,
             ArtikelSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();

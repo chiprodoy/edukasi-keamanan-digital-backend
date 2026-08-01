@@ -13,6 +13,8 @@ class RubrikPenilaian extends Model
         'outcome_id',
         'batas_bawah_skor',
         'batas_atas_skor',
+        'label_level',
+        'level',
         'deskripsi_capaian',
     ];
 

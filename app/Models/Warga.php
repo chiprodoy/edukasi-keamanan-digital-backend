@@ -18,7 +18,6 @@ class Warga extends Model
         'nik',
         'no_hp',
         'kecamatan',
-        'desa',
         'level_literasi',
     ];
 

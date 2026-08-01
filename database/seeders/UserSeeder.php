@@ -39,7 +39,6 @@ class UserSeeder extends Seeder
             'nik'            => '1608011508920001',
             'no_hp'          => '081271829301',
             'kecamatan'      => 'Baturaja Timur',
-            'desa'           => 'Kemalaraja',
             'level_literasi' => 'Pemula',
         ]);
 
@@ -56,7 +55,6 @@ class UserSeeder extends Seeder
             'nik'            => '1608025210950003',
             'no_hp'          => '085267182938',
             'kecamatan'      => 'Baturaja Barat',
-            'desa'           => 'Tanjung Agung',
             'level_literasi' => 'Menengah',
         ]);
     }
