@@ -10,17 +10,23 @@ class OpsiJawaban extends Model
     protected $table = 'opsi_jawaban';
 
     protected $fillable = [
-        'kuis_id',
-        'teks_pilihan',
-        'is_benar',
+        'soal_kuis_id',
+        'teks_jawaban',
+        'poin',
+        'is_correct',
     ];
 
     protected $casts = [
-        'is_benar' => 'boolean',
+        'is_correct' => 'boolean',
     ];
 
-    public function kuis(): BelongsTo
+    // public function kuis(): BelongsTo
+    // {
+    //     return $this->belongsTo(Kuis::class);
+    // }
+
+    public function soalKuis(): BelongsTo
     {
-        return $this->belongsTo(Kuis::class);
+        return $this->belongsTo(SoalKuis::class, 'soal_kuis_id');
     }
 }

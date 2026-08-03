@@ -12,13 +12,27 @@ class Kuis extends Model
 
     protected $fillable = [
         'materi_id',
-        'teks_soal',
-        'poin',
+        'judul',
+        'deskripsi',
+        'durasi_menit',
+        'passing_score',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'durasi_menit' => 'integer',
+        'passing_score' => 'integer',
     ];
 
     public function materi(): BelongsTo
     {
         return $this->belongsTo(Materi::class);
+    }
+
+    public function soal_kuis(): HasMany
+    {
+        return $this->hasMany(SoalKuis::class);
     }
 
     public function opsiJawaban(): HasMany

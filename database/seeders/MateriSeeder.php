@@ -32,25 +32,39 @@ class MateriSeeder extends Seeder
 
         // Kuis untuk Materi 1
         $kuis1 = Kuis::create([
-            'materi_id' => $materi1->id,
-            'teks_soal' => 'Apa yang harus dilakukan jika menerima file berformat .APK dari nomor tidak dikenal di WhatsApp?',
-            'poin'      => 50,
+            'materi_id'     => $materi1->id,
+            'judul'         => 'Evaluasi Dasar: Keamanan Akun & Kode OTP',
+            'deskripsi'     => 'Kuis evaluasi untuk menguji pemahaman warga terkait kerahasiaan OTP.',
+            'durasi_menit'  => 10,
+            'passing_score' => 70,
+            'is_active'     => true,
         ]);
-
-        OpsiJawaban::create(['kuis_id' => $kuis1->id, 'teks_pilihan' => 'Langsung mengunduh dan membukanya', 'is_benar' => false]);
-        OpsiJawaban::create(['kuis_id' => $kuis1->id, 'teks_pilihan' => 'Abaikan, hapus pesan, dan blokir nomor tersebut', 'is_benar' => true]);
-        OpsiJawaban::create(['kuis_id' => $kuis1->id, 'teks_pilihan' => 'Meneruskan pesan ke grup keluarga', 'is_benar' => false]);
-        OpsiJawaban::create(['kuis_id' => $kuis1->id, 'teks_pilihan' => 'Membalas pesan untuk bertanya asal pengirim', 'is_benar' => false]);
+        $soal1 = $kuis1->soal_kuis()->create([
+            'teks_soal' => 'Apa yang sebaiknya dilakukan jika menerima pesan WhatsApp dari nomor asing yang mengirimkan file .APK?',
+            'poin'      => 100,
+        ]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal1->id, 'teks_jawaban' => 'Langsung mengunduh dan membukanya', 'poin' => 25, 'is_correct' => false]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal1->id, 'teks_jawaban' => 'Abaikan, hapus pesan, dan blokir nomor tersebut', 'poin' => 25, 'is_correct' => true]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal1->id, 'teks_jawaban' => 'Meneruskan pesan ke grup keluarga', 'poin' => 25, 'is_correct' => false]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal1->id, 'teks_jawaban' => 'Membalas pesan untuk bertanya asal pengirim', 'poin' => 25, 'is_correct' => false]);
 
         $kuis2 = Kuis::create([
             'materi_id' => $materi1->id,
-            'teks_soal' => 'Bahaya utama menginstall aplikasi buatan luar (*.APK) secara sembarangan adalah...',
-            'poin'      => 50,
+            'judul'     => 'Evaluasi Lanjutan: Risiko Mengunduh APK Asing',
+            'deskripsi' => 'Bahaya utama menginstall aplikasi buatan luar (*.APK) secara sembarangan adalah...',
+            'durasi_menit' => 10,
+            'passing_score' => 70,
+            'is_active' => true,
         ]);
 
-        OpsiJawaban::create(['kuis_id' => $kuis2->id, 'teks_pilihan' => 'Aplikasi dapat mencuri SMS OTP dan data perbankan', 'is_benar' => true]);
-        OpsiJawaban::create(['kuis_id' => $kuis2->id, 'teks_pilihan' => 'Baterai HP menjadi lebih hemat', 'is_benar' => false]);
-        OpsiJawaban::create(['kuis_id' => $kuis2->id, 'teks_pilihan' => 'Sinyal HP meningkat drastis', 'is_benar' => false]);
-        OpsiJawaban::create(['kuis_id' => $kuis2->id, 'teks_pilihan' => 'Kamera HP terlindungi otomatis', 'is_benar' => false]);
+        $soal2 = $kuis2->soal_kuis()->create([
+            'teks_soal' => 'Bahaya utama menginstall aplikasi buatan luar (*.APK) secara sembarangan adalah...',
+            'poin'      => 100,
+        ]);
+
+        OpsiJawaban::create(['soal_kuis_id' => $soal2->id, 'teks_jawaban' => 'Aplikasi dapat mencuri SMS OTP dan data perbankan','poin' => 50, 'is_correct' => true]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal2->id, 'teks_jawaban' => 'Baterai HP menjadi lebih hemat', 'poin' => 50, 'is_correct' => false]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal2->id, 'teks_jawaban' => 'Sinyal HP meningkat drastis', 'poin' => 50, 'is_correct' => false]);
+        OpsiJawaban::create(['soal_kuis_id' => $soal2->id, 'teks_jawaban' => 'Kamera HP terlindungi otomatis', 'poin' => 50, 'is_correct' => false]);
     }
 }

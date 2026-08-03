@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('kuis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('materi_id')->constrained('materi')->onDelete('cascade');
-            $table->text('teks_soal');
-            $table->integer('poin')->default(10);
+            $table->string('judul');
+            $table->text('deskripsi')->nullable();
+            $table->integer('durasi_menit')->default(15);
+            $table->integer('passing_score')->default(70);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

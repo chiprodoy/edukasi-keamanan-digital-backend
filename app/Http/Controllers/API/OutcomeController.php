@@ -42,7 +42,7 @@ class OutcomeController extends Controller
         $validated = $request->validate([
             'kode_outcome' => 'required|string|max:20|unique:outcomes,kode_outcome',
             'judul_kompetensi' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'deskripsi' => 'nullable|string',
         ]);
 
         $outcome = Outcome::create($validated);

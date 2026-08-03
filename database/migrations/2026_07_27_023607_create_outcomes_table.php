@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_outcome', 20)->unique();
             $table->string('judul_kompetensi');
-            $table->text('deskripsi');
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }

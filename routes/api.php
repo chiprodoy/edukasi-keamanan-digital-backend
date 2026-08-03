@@ -12,6 +12,7 @@ use App\Http\Controllers\API\WargaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\OutcomeController;
 use App\Http\Controllers\API\RubrikPenilaianController;
+use App\Http\Controllers\API\SoalKuisController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Tanpa Auth)
@@ -52,7 +53,13 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
         Route::get('/materi', [MateriController::class, 'index']);
         Route::post('/materi', [CurriculumController::class, 'storeMateri']);
-        Route::post('/kuis', [CurriculumController::class, 'storeKuis']);
+
+        // Dropdown materi untuk form kuis
+        Route::get('/materi-options', [KuisController::class, 'materiOptions']);
+
+        Route::apiResource('/kuis', KuisController::class);
+        Route::get('/kuis/{id}/questions', [KuisController::class, 'questionsByKuis']);
+        Route::apiResource('/question', SoalKuisController::class);
 
         Route::apiResource('kategori-artikel', KategoriArtikelController::class);
         Route::apiResource('/artikel', ArtikelController::class);

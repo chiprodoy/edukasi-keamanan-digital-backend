@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\SoalKuis;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('opsi_jawaban', function (Blueprint $table) {
+        Schema::create('soal_kuis', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(SoalKuis::class)->onDelete('cascade');
-            $table->text('teks_jawaban');
-            $table->double('poin', 10, 2)->default(0);
-            $table->boolean('is_correct')->default(false);
+            $table->foreignId('kuis_id')->constrained('kuis')->onDelete('cascade');
+            $table->text('teks_soal');
+            $table->integer('poin')->default(10);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('opsi_jawaban');
+        Schema::dropIfExists('soal_kuis');
     }
 };
