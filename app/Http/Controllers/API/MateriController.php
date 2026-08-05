@@ -22,10 +22,7 @@ class MateriController extends Controller
     {
         $materi = Materi::where('slug', $slug)
             ->where('status', 'active')
-            ->with(['outcomes', 'kuis.opsiJawaban' => function ($query) {
-                // Kunci jawaban di-hidden di level query untuk keamanan Warga (REQ-07)
-                $query->select('id', 'kuis_id', 'teks_pilihan');
-            }])
+            ->with(['outcomes', 'kuis' ])
             ->firstOrFail();
 
         return response()->json(['data' => $materi], 200);

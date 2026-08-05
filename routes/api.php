@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\OutcomeController;
 use App\Http\Controllers\API\RubrikPenilaianController;
 use App\Http\Controllers\API\SoalKuisController;
+use App\Http\Controllers\API\UserDashboardController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Tanpa Auth)
@@ -45,6 +46,11 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/kuis/materi/{materiId}', [KuisController::class, 'getKuisByMateri']);
     Route::post('/kuis/submit', [KuisController::class, 'submitKuis']);
 
+    Route::get('/materi', [MateriController::class, 'index']);
+    Route::get('/materi/{slug}', [MateriController::class, 'show']);
+    Route::get('/artikel', [ArtikelController::class, 'index']);
+    Route::get('/artikel/{slug}', [ArtikelController::class, 'show']);
+
     // Admin Endpoints
     Route::prefix('admin')->group(function () {
             // Endpoint Dashboard Admin
@@ -70,5 +76,10 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::apiResource('rubrik-penilaian', RubrikPenilaianController::class);
 
         Route::get('/laporan/literasi', [LaporanController::class, 'getAnalitikLiterasi']);
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/dashboard', [UserDashboardController::class, 'index']);
+
     });
 });

@@ -145,7 +145,6 @@ class KuisController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $quiz = Kuis::findOrFail($id);
-
         $validated = $request->validate([
             'materi_id'     => 'required|exists:materi,id',
             'judul'         => 'required|string|max:255',
@@ -156,7 +155,8 @@ class KuisController extends Controller
         ]);
 
         $quiz->update($validated);
-        $quiz->load('materi:id,judul');
+
+        $quiz->load('materi:id,judul,slug');
 
         return response()->json([
             'status'  => 'success',
@@ -170,7 +170,7 @@ class KuisController extends Controller
                 'durasi_menit'  => $quiz->durasi_menit,
                 'passing_score' => $quiz->passing_score,
                 'is_active'     => (bool) $quiz->is_active,
-                'total_soal'    => $quiz->opsiJawaban()->count(),
+                'total_soal'    => $quiz->soal_kuis()->count(),
             ]
         ], 200);
     }

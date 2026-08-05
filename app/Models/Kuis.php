@@ -35,8 +35,8 @@ class Kuis extends Model
         return $this->hasMany(SoalKuis::class);
     }
 
-    public function opsiJawaban(): HasMany
-    {
-        return $this->hasMany(OpsiJawaban::class);
-    }
+    // public function opsiJawaban(): HasMany
+    // {
+    //     return $this->hasMany(OpsiJawaban::class);
+    // }
 }
