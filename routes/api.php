@@ -43,8 +43,9 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
 
     // Warga Quiz Endpoint
-    Route::get('/kuis/materi/{materiId}', [KuisController::class, 'getKuisByMateri']);
-    Route::post('/kuis/submit', [KuisController::class, 'submitKuis']);
+    //Route::get('/kuis/materi/{materiId}', [KuisController::class, 'getKuisByMateri']);
+    Route::get('/kuis/{kuisId}', [KuisController::class, 'show']);
+    Route::post('/kuis/{kuisId}/submit', [KuisController::class, 'submitKuis']);
 
     Route::get('/materi', [MateriController::class, 'index']);
     Route::get('/materi/{slug}', [MateriController::class, 'show']);

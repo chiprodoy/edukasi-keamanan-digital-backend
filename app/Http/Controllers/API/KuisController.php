@@ -63,7 +63,7 @@ class KuisController extends Controller
     {
         $search = $request->query('search');
 
-        $quiz = Kuis::with('materi:id,judul')
+        $quiz = Kuis::with(['materi','soal_kuis'])
             ->withCount('soal_kuis as total_soal')
             ->where('id', $id)
             ->first();
@@ -72,12 +72,27 @@ class KuisController extends Controller
                     'id'            => $quiz->id,
                     'materi_id'     => $quiz->materi_id,
                     'materi_title'  => $quiz->materi ? $quiz->materi->judul : 'Modul Umum',
+                    'kategori'      => $quiz->materi ? $quiz->materi->kategori : null,
                     'judul'         => $quiz->judul,
                     'deskripsi'     => $quiz->deskripsi,
                     'durasi_menit'  => $quiz->durasi_menit,
                     'passing_score' => $quiz->passing_score,
                     'is_active'     => (bool) $quiz->is_active,
                     'total_soal'    => $quiz->total_soal ?? 0,
+                    'questions'     => $quiz->soal_kuis->map(function ($question) {
+                        return [
+                            'id'            => $question->id,
+                            'kuis_id'       => $question->kuis_id,
+                            'pertanyaan'    => $question->teks_soal,
+                            'opsi_jawaban'  => $question->opsiJawaban->map(function ($option) {
+                                return [
+                                    'id'            => $option->id,
+                                    'teks_pilihan'  => $option->teks_jawaban,
+                                    // REQ-07: Proteksi payload — hindari kebocoran field `is_benar`
+                                ];
+                            }),
+                        ];
+                    }),
                     'created_at'    => $quiz->created_at,
         ];
 
@@ -202,25 +217,26 @@ class KuisController extends Controller
         return response()->json(['data' => $kuis], 200);
     }
 
-    public function submitKuis(SubmitKuisRequest $request): JsonResponse
+    public function submitKuis($kuisId,SubmitKuisRequest $request): JsonResponse
     {
         $warga = auth()->user()->warga;
         if (!$warga) {
             return response()->json(['message' => 'Akses khusus warga.'], 403);
         }
 
-        $result = DB::transaction(function () use ($request, $warga) {
+        $result = DB::transaction(function () use ($request, $warga, $kuisId) {
             $totalSkor = 0;
             $detailSubmissions = [];
 
             foreach ($request->jawaban as $item) {
-                $kuis = Kuis::findOrFail($item['kuis_id']);
-                $opsi = OpsiJawaban::where('id', $item['opsi_id'])
-                    ->where('kuis_id', $kuis->id)
+                $kuis = Kuis::findOrFail($kuisId);
+                $soal = $kuis->soal_kuis()->where('id', $item['soal_kuis_id'])->firstOrFail();
+                $opsi = OpsiJawaban::where('id', $item['opsi_jawaban_id'])
+                    ->where('soal_kuis_id', $soal->id)
                     ->firstOrFail();
 
-                $isBenar = $opsi->is_benar;
-                $poinDidapat = $isBenar ? $kuis->poin : 0;
+                $isBenar = $opsi->is_correct;
+                $poinDidapat = $isBenar ? $soal->poin : 0;
                 $totalSkor += $poinDidapat;
 
                 $detailSubmissions[] = [

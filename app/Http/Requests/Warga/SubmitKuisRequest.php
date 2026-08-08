@@ -16,8 +16,8 @@ class SubmitKuisRequest extends FormRequest
         return [
             'materi_id'           => 'required|exists:materi,id',
             'jawaban'             => 'required|array|min:1',
-            'jawaban.*.kuis_id'   => 'required|exists:kuis,id',
-            'jawaban.*.opsi_id'   => 'required|exists:opsi_jawaban,id',
+            'jawaban.*.soal_kuis_id'   => 'required|exists:soal_kuis,id',
+            'jawaban.*.opsi_jawaban_id'   => 'required|exists:opsi_jawaban,id',
         ];
     }
 }
