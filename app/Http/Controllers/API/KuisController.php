@@ -24,36 +24,80 @@ class KuisController extends Controller
     public function index(Request $request): JsonResponse
     {
         $search = $request->query('search');
+        $warga = auth()->user()->warga;
+        if($warga) {
+            $wargaId = $warga->id;
 
-        $quizzes = Kuis::with('materi:id,judul')
-            ->withCount('soal_kuis as total_soal')
-            ->when($search, function ($query, $search) {
-                $query->where('judul', 'like', "%{$search}%")
-                      ->orWhereHas('materi', function ($q) use ($search) {
-                          $q->where('judul', 'like', "%{$search}%");
-                      });
-            })
-            ->latest()
-            ->get()
-            ->map(function ($quiz) {
-                return [
-                    'id'            => $quiz->id,
-                    'materi_id'     => $quiz->materi_id,
-                    'materi_title'  => $quiz->materi ? $quiz->materi->judul : 'Modul Umum',
-                    'judul'         => $quiz->judul,
-                    'deskripsi'     => $quiz->deskripsi,
-                    'durasi_menit'  => $quiz->durasi_menit,
-                    'passing_score' => $quiz->passing_score,
-                    'is_active'     => (bool) $quiz->is_active,
-                    'total_soal'    => $quiz->total_soal ?? 0,
-                    'created_at'    => $quiz->created_at,
-                ];
-            });
+            $quizzes = Kuis::with('materi:id,judul')
+                    ->withCount('soal_kuis as total_soal')
+                    ->addSelect([
+                    'skor_terakhir' => HasilKuis::select('total_skor')
+                        ->whereColumn('materi_id', 'kuis.materi_id') // Gunakan 'kuis_id', 'kuis.id' jika tabel hasil_kuis menyimpan kuis_id
+                        ->where('warga_id', $wargaId)
+                        ->latest('waktu_selesai')
+                        ->limit(1)
+                    ])
+                    ->when($search, function ($query, $search) {
+                        $query->where('judul', 'like', "%{$search}%")
+                            ->orWhereHas('materi', function ($q) use ($search) {
+                                $q->where('judul', 'like', "%{$search}%");
+                            });
+                    })
+                    ->latest()
+                    ->get()
+                    ->map(function ($quiz) {
+                        return [
+                            'id'            => $quiz->id,
+                            'materi_id'     => $quiz->materi_id,
+                            'materi_title'  => $quiz->materi ? $quiz->materi->judul : 'Modul Umum',
+                            'judul'         => $quiz->judul,
+                            'deskripsi'     => $quiz->deskripsi,
+                            'durasi_menit'  => $quiz->durasi_menit,
+                            'passing_score' => $quiz->passing_score,
+                            'is_active'     => (bool) $quiz->is_active,
+                            'total_soal'    => $quiz->total_soal ?? 0,
+                            'last_score'     => $quiz->skor_terakhir ?? null,
+                            'created_at'    => $quiz->created_at,
+                        ];
+                    });
 
-        return response()->json([
-            'status' => 'success',
-            'data'   => $quizzes,
-        ], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'data'   => $quizzes,
+                ], 200);
+        } else {
+            $quizzes = Kuis::with('materi:id,judul')
+                    ->withCount('soal_kuis as total_soal')
+                    ->when($search, function ($query, $search) {
+                        $query->where('judul', 'like', "%{$search}%")
+                            ->orWhereHas('materi', function ($q) use ($search) {
+                                $q->where('judul', 'like', "%{$search}%");
+                            });
+                    })
+                    ->latest()
+                    ->get()
+                    ->map(function ($quiz) {
+                        return [
+                            'id'            => $quiz->id,
+                            'materi_id'     => $quiz->materi_id,
+                            'materi_title'  => $quiz->materi ? $quiz->materi->judul : 'Modul Umum',
+                            'judul'         => $quiz->judul,
+                            'deskripsi'     => $quiz->deskripsi,
+                            'durasi_menit'  => $quiz->durasi_menit,
+                            'passing_score' => $quiz->passing_score,
+                            'is_active'     => (bool) $quiz->is_active,
+                            'total_soal'    => $quiz->total_soal ?? 0,
+                            'created_at'    => $quiz->created_at,
+                        ];
+                    });
+
+                return response()->json([
+                    'status' => 'success',
+                    'data'   => $quizzes,
+                ], 200);
+        }
+
+
     }
     /**
      * GET /api/admin/kuis/{id}
